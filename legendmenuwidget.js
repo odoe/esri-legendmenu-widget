@@ -7,9 +7,9 @@ define([
   'dijit/MenuBar',
   'dijit/PopupMenuBarItem',
   'esri/request',
-  'widgets/legendtoc/LegendMenuItem',
-  'widgets/legendtoc/LegendCheckedMenuItem',
-  'widgets/legendtoc/CheckedPopupMenuItem'
+  'widgets/legend/legendmenuitem',
+  'widgets/legend/legendcheckedmenuitem',
+  'widgets/legend/checkedpopupmenuitem'
 ], function (
   declare, arrayUtil,
   Evented,

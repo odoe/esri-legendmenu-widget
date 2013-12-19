@@ -1,26 +1,20 @@
-/*global window document console define require */
-(function() {
-    'use strict';
-
-    define([
-        'dojo/_base/declare',
-        'dijit/CheckedMenuItem',
-        'text!widgets/legendtoc/templates/LegendCheckedMenuItem.tpl.html',
-        'dijit/hccss'
-        ], function(declare, CheckedMenuItem, template) {
-            /**
-             * Extends dijit.CheckedMenuItem.
-             * Requires a customized template html file.
-             * @constructor
-             */
-            var LegendCheckedMenuItem = declare([CheckedMenuItem], {
-                templateString: template,
-                legendUrl: ''
-            });
-
-            return LegendCheckedMenuItem;
-        });
-
-}).call(this);
+/*global define*/
+define([
+  'dojo/_base/declare',
+  'dijit/CheckedMenuItem',
+  'text!widgets/legend/templates/legendcheckedmenuitem.tpl.html',
+  'dijit/hccss'
+], function(declare, CheckedMenuItem, template) {
+  'use strict';
+  /**
+   * Extends dijit.CheckedMenuItem.
+   * Requires a customized template html file.
+   * @constructor
+   */
+  return declare([CheckedMenuItem], {
+    templateString: template,
+    legendUrl: ''
+  });
+});
 
 

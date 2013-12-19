@@ -1,28 +1,21 @@
-/*global window document console define require */
-(function() {
-    'use strict';
+/*global define*/
+define([
+  'dojo/_base/declare',
+  'dijit/MenuItem',
+  'text!widgets/legend/templates/legendmenuitem.tpl.html',
+  'dijit/hccss'
+], function(declare, MenuItem, template) {
+  'use strict';
+  //http://bugs.dojotoolkit.org/ticket/16177
 
-    define([
-        'dojo/_base/declare',
-        'dijit/MenuItem',
-        'text!widgets/legendtoc/templates/LegendMenuItem.tpl.html',
-        'dijit/hccss'
-        ], function(declare, MenuItem, template) {
+  /**
+   * Extends dijit.MenuItem for use in LegendToc
+   * @constructor
+   */
+  return declare([MenuItem], {
+    templateString: template,
+    legendUrl: ''
+  });
+});
 
-            //http://bugs.dojotoolkit.org/ticket/16177
-
-            /**
-             * Extends dijit.MenuItem for use in LegendToc
-             * @constructor
-             */
-            var LegendMenuItem = declare([MenuItem], {
-                templateString: template,
-                legendUrl: ''
-            });
-
-            return LegendMenuItem;
-
-        });
-
-}).call(this);
 
