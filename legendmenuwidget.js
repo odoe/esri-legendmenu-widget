@@ -3,6 +3,8 @@ define([
   'dojo/_base/declare',
   'dojo/_base/array',
   'dojo/Evented',
+  'dojo/dom-construct',
+  'dojo/dom-class',
   'dijit/Menu',
   'dijit/MenuBar',
   'dijit/PopupMenuBarItem',
@@ -12,7 +14,7 @@ define([
   'widgets/legend/checkedpopupmenuitem'
 ], function (
   declare, arrayUtil,
-  Evented,
+  Evented, domConstruct, domClass,
   Menu, MenuBar, PopupMenuBarItem,
   esriRequest,
   LegendMenuItem, LegendCheckedMenuItem, CheckedPopupMenuItem
@@ -188,17 +190,16 @@ define([
   }
 
   function addLegend(menubar) {
-    var node = document.createElement('li'),
-    a = document.createElement('a'),
-    tools_menu = document.getElementById('tools-menu');
+    var node, a, tools_menu;
 
-    a.href = '#';
-    node.appendChild(a);
-    node.classList.add('toc-menu');
-    console.debug('MENUBAR', menubar);
-    menubar.domNode.classList.add('navbar-inverse');
+    tools_menu = document.getElementById('tools-menu');
+    node = domConstruct.create('li');
+    a = domConstruct.create('a', { href: '#' }, node);
+    domClass.add(node, 'toc-menu');
+    domClass.add(menubar.domNode, 'navbar-inverse');
+
     if (tools_menu) {
-      tools_menu.appendChild(node);
+      domConstruct.place(node, tools_menu);
       menubar.placeAt(a).startup(); // root of the menu bar
     }
   }
@@ -259,8 +260,6 @@ define([
         label: '<span class="glyphicon glyphicon-list lgnd-icon"></span>',
         popup: tocMenu
       });
-
-      //popup.domNode.classList.add('navbar-inverse');
 
       menuBar.addChild(popup);
       addLegend(menuBar);
