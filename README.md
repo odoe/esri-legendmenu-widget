@@ -7,7 +7,7 @@ This widget accepts options for the layer ids to be included in the legend.
 
 ````javascript
 define(['widgets/legend/legendmenuwidget'], function(LegendMenuWidget) {
-  var lgdndMenu = new LegendMenuWidget({
+  var lgndMenu = new LegendMenuWidget({
     "options": {
       "settings": {
         "operational": [
@@ -16,7 +16,7 @@ define(['widgets/legend/legendmenuwidget'], function(LegendMenuWidget) {
       }
     }
   });
-
+  lgndMenu.startup();
 });
 ````
 
