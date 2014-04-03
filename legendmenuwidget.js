@@ -2,6 +2,7 @@
 define([
   'dojo/_base/declare',
   'dojo/_base/array',
+  'dojo/on',
   'dojo/Evented',
   'dojo/dom-construct',
   'dojo/dom-class',
@@ -14,7 +15,7 @@ define([
   'widgets/legend/checkedpopupmenuitem'
 ], function (
   declare, arrayUtil,
-  Evented, domConstruct, domClass,
+  on, Evented, domConstruct, domClass,
   Menu, MenuBar, PopupMenuBarItem,
   esriRequest,
   LegendMenuItem, LegendCheckedMenuItem, CheckedPopupMenuItem
@@ -197,6 +198,9 @@ define([
     a = domConstruct.create('a', { href: '#' }, node);
     domClass.add(node, 'toc-menu');
     domClass.add(menubar.domNode, 'navbar-inverse');
+    on(a, 'click', function(e) {
+      e.preventDefault();
+    });
 
     if (tools_menu) {
       domConstruct.place(node, tools_menu);
