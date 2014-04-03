@@ -239,7 +239,7 @@ define([
       arrayUtil.forEach(layers, function(layer) {
         var lyrMenu = new Menu({}),
         serviceMenu = new CheckedPopupMenuItem({
-          label: layer.title,
+          label: layer.title || layer.id,
           layer: layer,
           checked: layer.visible,
           popup: lyrMenu,
