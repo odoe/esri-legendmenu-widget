@@ -219,7 +219,7 @@ define([
     map: null,
 
     constructor: function(options) {
-      declare.safeMixin(this.options, options);
+      this.options = options || {};
       this.map = this.options.map;
       var ids = this.options.settings.operational;
       this.operational = arrayUtil.map(ids, function(id) {
