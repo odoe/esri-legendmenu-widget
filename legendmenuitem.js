@@ -1,4 +1,3 @@
-/*global define*/
 define([
   'dojo/_base/declare',
   'dijit/MenuItem',
@@ -10,12 +9,9 @@ define([
 
   /**
    * Extends dijit.MenuItem for use in LegendToc
-   * @constructor
    */
   return declare([MenuItem], {
     templateString: template,
     legendUrl: ''
   });
 });
-
-

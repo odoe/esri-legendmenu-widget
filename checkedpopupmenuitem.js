@@ -1,4 +1,3 @@
-/*global define*/
 define([
   'dojo/_base/declare',
   'dijit/CheckedMenuItem',
@@ -11,11 +10,9 @@ define([
   /**
    * Mixin of dijit.CheckedMenuItem and dijit.PopupMenuItem.
    * Requires a customized template html file.
-   * @constructor
    */
   return declare([CheckedMenuItem, PopupMenuItem], {
     templateString: template
   });
 
 });
-

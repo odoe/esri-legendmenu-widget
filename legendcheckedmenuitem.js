@@ -1,4 +1,3 @@
-/*global define*/
 define([
   'dojo/_base/declare',
   'dijit/CheckedMenuItem',
@@ -9,12 +8,9 @@ define([
   /**
    * Extends dijit.CheckedMenuItem.
    * Requires a customized template html file.
-   * @constructor
    */
   return declare([CheckedMenuItem], {
     templateString: template,
     legendUrl: ''
   });
 });
-
-

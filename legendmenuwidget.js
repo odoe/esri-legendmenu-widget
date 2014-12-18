@@ -1,4 +1,3 @@
-/*global define, document*/
 define([
   'dojo/_base/declare',
   'dojo/_base/array',
@@ -13,7 +12,7 @@ define([
   'widgets/legend/legendmenuitem',
   'widgets/legend/legendcheckedmenuitem',
   'widgets/legend/checkedpopupmenuitem'
-], function (
+], function(
   declare, arrayUtil,
   on, Evented, domConstruct, domClass,
   Menu, MenuBar, PopupMenuBarItem,
@@ -25,7 +24,6 @@ define([
   /**
    * Build a dijit.Menu of Legend items in a Layer item
    * @type Function
-   * @param {esri/layers/LayerInfo} info
    * @param {Array} legend
    * @return {dijit/Menu}
    * @private
@@ -43,8 +41,8 @@ define([
 
   // This section handles layers that have a parentLayerId (part of a grouped layer)
   function handleGroupedLayers(checked, info, visible) {
-    var parentId = info.parentLayerId,
-    index = arrayUtil.indexOf(visible, parentId);
+    var parentId = info.parentLayerId;
+    var index = arrayUtil.indexOf(visible, parentId);
     if (!checked && parentId > -1 && index > -1) {
       visible.splice(index, 1);
     } else if (checked && parentId > -1 && index > -1) {
@@ -54,8 +52,8 @@ define([
   }
 
   function handleSubLayers(info, visible) {
-    var hasParent = true,
-    index;
+    var hasParent = true;
+    var index;
 
     arrayUtil.forEach(info.subLayerIds, function(subId) {
       index = arrayUtil.indexOf(visible, subId);
@@ -85,15 +83,15 @@ define([
    * @private
    */
   function legendResponseHandler(layer, lyrMenu) {
-    var onChecked = function (checked) {
-      var visible = layer.visibleLayers,
-      _id = this.info.layerId || this.info.id || 0,
-      index = arrayUtil.indexOf(visible, _id);
+    var onChecked = function(checked) {
+      var visible = layer.visibleLayers;
+      var id = this.info.layerId || this.info.id || 0;
+      var index = arrayUtil.indexOf(visible, id);
 
       if (index > -1) {
         visible.splice(index, 1);
       } else {
-        visible.push(_id);
+        visible.push(id);
       }
 
       visible = handleGroupedLayers(checked, this.info, visible);
@@ -107,13 +105,13 @@ define([
     };
 
     // return the promise function
-    return function (response) {
-      var lyrs = response.layers,
-      subIds = [];
+    return function(response) {
+      var lyrs = response.layers;
+      var subIds = [];
 
-      function fromLayersResponse(_id) {
+      function fromLayersResponse(id) {
         for (var x = 0, len = lyrs.length; x < len; x++) {
-          if (lyrs[x].layerId === _id) {
+          if (lyrs[x].layerId === id) {
             return lyrs[x];
           }
         }
@@ -145,8 +143,8 @@ define([
       }
 
       arrayUtil.forEach(layer.layerInfos, function(info) {
-        var sub_info,
-        responseLayer = fromLayersResponse(info.id);
+        var subInfo;
+        var responseLayer = fromLayersResponse(info.id);
 
         if (info.subLayerIds) { // handle grouped layers. Group layers suck.
           var groupMenu = buildGroupMenu(info.subLayerIds);
@@ -159,28 +157,33 @@ define([
             onChange: onChecked
           }));
 
-        } else if (responseLayer && responseLayer.legend.length > 1 && subIds.indexOf(info.id) < 0) {
-          sub_info = fromLayersResponse(info.id);
+        } else if (responseLayer && responseLayer.legend.length > 1 &&
+                   subIds.indexOf(info.id) < 0) {
+          subInfo = fromLayersResponse(info.id);
           // make a regular menu and normal menu items to legend
-          if (sub_info) {
-            var legendMenu = buildLegendMenu(sub_info.legend);
+          if (subInfo) {
+            var legendMenu = buildLegendMenu(subInfo.legend);
             lyrMenu.addChild(new CheckedPopupMenuItem({
-              label: sub_info.layerName,
+              label: subInfo.layerName,
               info: info,
               popup: legendMenu,
-              checked: arrayUtil.indexOf(layer.visibleLayers, sub_info.layerId) > -1,
+              checked: arrayUtil.indexOf(layer.visibleLayers,
+                                         subInfo.layerId) > -1,
               onChange: onChecked
             }));
           }
         } else if (subIds.indexOf(info.id) < 0) {
           // make a checked menu item
-          sub_info = fromLayersResponse(info.id);
-          if (sub_info) {
+          subInfo = fromLayersResponse(info.id);
+          if (subInfo) {
             lyrMenu.addChild(new LegendCheckedMenuItem({
-              label: sub_info.layerName,
-              info: sub_info,
-              legendUrl: 'data:image/png;base64,' + sub_info.legend[0].imageData,
-              checked: arrayUtil.indexOf(layer.visibleLayers, sub_info.layerId) > -1,
+              label: subInfo.layerName,
+              info: subInfo,
+              legendUrl: 'data:image/png;base64,' +
+                subInfo.legend[0].imageData,
+              checked: arrayUtil.indexOf(
+                layer.visibleLayers, subInfo.layerId
+              ) > -1,
               onChange: onChecked
             }));
           }
@@ -191,19 +194,17 @@ define([
   }
 
   function addLegend(menubar) {
-    var node, a, tools_menu;
-
-    tools_menu = document.getElementById('tools-menu');
-    node = domConstruct.create('li');
-    a = domConstruct.create('a', { href: '#' }, node);
+    var toolsMenu = document.getElementById('tools-menu');
+    var node = domConstruct.create('li');
+    var a = domConstruct.create('a', {href: '#'}, node);
     domClass.add(node, 'toc-menu');
     domClass.add(menubar.domNode, 'navbar-inverse');
     on(a, 'click', function(e) {
       e.preventDefault();
     });
 
-    if (tools_menu) {
-      domConstruct.place(node, tools_menu);
+    if (toolsMenu) {
+      domConstruct.place(node, toolsMenu);
       menubar.placeAt(a).startup(); // root of the menu bar
     }
   }
@@ -231,18 +232,18 @@ define([
      * Startup function for Widget
      * @param {Array} options
      */
-    startup: function () {
-      var tocMenu = new Menu({}),
-      menuBar = new MenuBar({}), // root of the menu bar
-      layers = this.operational,
-      onServiceChecked = function (checked) {
+    startup: function() {
+      var tocMenu = new Menu({});
+      // root of the menu bar
+      var menuBar = new MenuBar({});
+      var layers = this.operational;
+      var onServiceChecked = function(checked) {
         this.layer.setVisibility(checked);
-      },
-      popup;
+      };
 
       arrayUtil.forEach(layers, function(layer) {
-        var lyrMenu = new Menu({}),
-        serviceMenu = new CheckedPopupMenuItem({
+        var lyrMenu = new Menu({});
+        var serviceMenu = new CheckedPopupMenuItem({
           label: layer.title || layer.id,
           layer: layer,
           checked: layer.visible,
@@ -260,7 +261,7 @@ define([
         }).then(legendResponseHandler(layer, lyrMenu));
         tocMenu.addChild(serviceMenu);
       });
-      popup = new PopupMenuBarItem({
+      var popup = new PopupMenuBarItem({
         label: '<span class="glyphicon glyphicon-list lgnd-icon"></span>',
         popup: tocMenu
       });
